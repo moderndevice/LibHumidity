@@ -13,6 +13,8 @@ LibHumidity humidity = LibHumidity(0);
 
 void setup() {
   Serial.begin(9600);
+  // used for powering the sensor from analog pins 16 & 17
+  // feel free to power sensor otherwise, and delete the following code
   pinMode(16, OUTPUT);
   digitalWrite(16, LOW);  //GND pin
   pinMode(17, OUTPUT);

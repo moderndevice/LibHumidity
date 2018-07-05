@@ -26,12 +26,7 @@
 #include <Wire.h>
 //#include <wiring.h>
 #include "LibHumidity.h"
-
-#if defined(ARDUINO) && ARDUINO >= 100
 #include "Arduino.h"
-#else
-#include "WProgram.h"
-#endif
 
 /******************************************************************************
  * Constructors
@@ -138,7 +133,7 @@ uint16_t LibHumidity::readSensor(uint8_t command) {
     //Store the result
     result = ((Wire.read()) << 8);
     result += Wire.read();
-result &= ~0x0003;   // clear two low bits (status bits)
+	result &= ~0x0003;   // clear two low bits (status bits)
     return result;
 }
 
@@ -149,7 +144,8 @@ float LibHumidity::calculateTemperatureC(uint16_t analogTempValue) {
   float temperatureC;
 
 st = analogTempValue;
-  temperatureC =  (((175.72/65536.0) * (float)analogTempValue) - 46.85); //T= -46.85 + 175.72 * ST/2^16
+
+  temperatureC =  (((175.72 * (float)analogTempValue) / 65536.0) - 46.85); //T= -46.85 + 175.72 * ST/2^16
   return temperatureC;
 }
 
@@ -159,7 +155,7 @@ float LibHumidity::calculateTemperatureF(uint16_t analogTempValue) {
 	float temperatureF;
 	
 	st = analogTempValue;
-	temperatureF =  (((175.72/65536.0) * (float)analogTempValue) - 46.85) * 9/5 + 32; //T= -46.85 + 175.72 * ST/2^16
+	temperatureF =  ((((175.72 * (float)analogTempValue) / 65536.0) - 46.85) * 9.0 / 5.0 ) + 32.0; //T= -46.85 + 175.72 * ST/2^16
 	return temperatureF;
 }
 
@@ -171,7 +167,7 @@ float humidityRH;                       // variable for result
 
 //-- calculate relative humidity [%RH] --
 
- humidityRH = -6.0 + 125.0/65536.0 * srh;       // RH= -6 + 125 * SRH/2^16
+ humidityRH = -6.0 + (125.0/65536.0 * srh);       // RH= -6 + 125 * SRH/2^16
  return humidityRH;
 }
 
